@@ -1,8 +1,10 @@
 name: Deploy to Azure Web App
 
-# Optional deployment pipeline. It only runs when the repository secrets below
-# are configured, so forks and clones can use the CI workflow alone.
-# See docs/deployment.md for how to create them.
+# Optional deployment pipeline. Azure secrets are not present in a fork or a
+# fresh clone, so the first step checks for them and every later step is skipped
+# when they are absent. That keeps this workflow green instead of failing on a
+# repository that has not opted into deployment.
+# See docs/deployment.md for how to configure the secrets.
 
 on:
   push:
@@ -27,15 +29,41 @@ jobs:
     environment: production
 
     steps:
+      - name: Check whether deployment is configured
+        id: guard
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          AZURE_LOGIN_SERVER: ${{ secrets.AZURE_LOGIN_SERVER }}
+          AZURE_WEB_APP_NAME: ${{ secrets.AZURE_WEB_APP_NAME }}
+        run: |
+          missing=""
+          for name in AZURE_CREDENTIALS AZURE_LOGIN_SERVER AZURE_WEB_APP_NAME; do
+            if [ -z "${!name}" ]; then
+              missing="${missing} ${name}"
+            fi
+          done
+
+          if [ -n "$missing" ]; then
+            echo "Deployment is not configured; missing:${missing}."
+            echo "Skipping. See docs/deployment.md to enable it."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Deployment is configured."
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.guard.outputs.configured == 'true'
         uses: actions/checkout@v4
 
       - name: Azure login
+        if: steps.guard.outputs.configured == 'true'
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Log in to Azure Container Registry
+        if: steps.guard.outputs.configured == 'true'
         uses: azure/docker-login@v2
         with:
           login-server: ${{ secrets.AZURE_LOGIN_SERVER }}
@@ -43,6 +71,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Build and push the image
+        if: steps.guard.outputs.configured == 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -52,6 +81,7 @@ jobs:
             ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:latest
 
       - name: Deploy to Azure Web App Service
+        if: steps.guard.outputs.configured == 'true'
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_WEB_APP_NAME }}
