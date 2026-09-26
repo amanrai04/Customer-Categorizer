@@ -1,0 +1,30 @@
+/* Styling for the prediction form. Bootstrap handles the rest. */
+
+body {
+    background-color: #f7f8fa;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+form.card {
+    border: none;
+    border-radius: 0.75rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.btn-primary {
+    width: 100%;
+    padding-block: 0.6rem;
+    font-weight: 600;
+}
+
+.alert-success h2 {
+    font-weight: 700;
+}

@@ -1,0 +1,49 @@
+# Expected shape of the raw customer records.
+#
+# `columns` is the contract between the data store and the pipeline: data
+# validation fails the run when the ingested dataframe does not match it, so a
+# renamed or missing column is caught before it reaches the model.
+#
+# `drop_columns` lists the identifiers and bookkeeping fields that carry no
+# signal and are removed during ingestion.
+
+columns:
+  # Demographics
+  Year_Birth: int64
+  Education: object
+  Marital_Status: object
+  Income: float64
+  Kidhome: int64
+  Teenhome: int64
+  Dt_Customer: object
+
+  # Purchase behaviour
+  Recency: int64
+  MntWines: int64
+  MntFruits: int64
+  MntMeatProducts: int64
+  MntFishProducts: int64
+  MntSweetProducts: int64
+  MntGoldProds: int64
+  NumDealsPurchases: int64
+  NumWebPurchases: int64
+  NumCatalogPurchases: int64
+  NumStorePurchases: int64
+  NumWebVisitsMonth: int64
+
+  # Campaign response
+  AcceptedCmp1: int64
+  AcceptedCmp2: int64
+  AcceptedCmp3: int64
+  AcceptedCmp4: int64
+  AcceptedCmp5: int64
+  Response: int64
+
+  # Complaints
+  Complain: int64
+
+# Dropped on ingestion: the row id and the two dealer profitability fields.
+drop_columns:
+  - ID
+  - Z_CostContact
+  - Z_Revenue

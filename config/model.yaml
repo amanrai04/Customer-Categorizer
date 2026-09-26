@@ -1,0 +1,34 @@
+# Model search space consumed by neuro_mf's ModelFactory.
+#
+# `model_selection.module_*` blocks describe the candidate models. For each one
+# `params` are the tuned defaults and `search_param_grid` is the space the grid
+# search explores; `grid_search` configures that search itself.
+
+grid_search:
+  class: GridSearchCV
+  module: sklearn.model_selection
+  params:
+    cv: 3
+    verbose: 3
+
+model_selection:
+  # Linear baseline. It is the best performing candidate on this dataset, see
+  # notebooks/Feature_Selection_and_classification.ipynb.
+  #
+  # Note: `multi_class` used to be pinned here. scikit-learn deprecated it in
+  # 1.5 and removed it in 1.7. `penalty: l2` is deprecated as of 1.8 and is
+  # already the default, so neither is passed to LogisticRegression any more.
+  module_0:
+    class: LogisticRegression
+    module: sklearn.linear_model
+    params:
+      C: 1000
+      max_iter: 500
+      solver: 'lbfgs'
+    search_param_grid:
+      C:
+        - 1000
+      max_iter:
+        - 113
+      solver:
+        - 'lbfgs'

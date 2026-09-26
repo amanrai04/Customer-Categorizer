@@ -1,0 +1,26 @@
+# ---------------------------------------------------------------------------
+# Web layer
+# ---------------------------------------------------------------------------
+fastapi>=0.110
+uvicorn[standard]>=0.27
+jinja2>=3.1
+python-multipart>=0.0.9     # required by starlette to parse form submissions
+
+# ---------------------------------------------------------------------------
+# Machine learning
+# ---------------------------------------------------------------------------
+numpy>=1.23
+pandas>=1.4
+scikit-learn>=1.1
+scipy>=1.9               # Kolmogorov-Smirnov test used for drift detection
+neuro-mf==0.0.5           # model factory + grid search driver; 0.0.5 is the latest release
+
+# ---------------------------------------------------------------------------
+# Data stores
+# ---------------------------------------------------------------------------
+pymongo>=4.2
+dnspython>=2.2             # required to resolve mongodb+srv:// connection strings
+boto3>=1.24
+from-root>=1.0             # locates the project root for the log directory
+PyYAML>=6.0
+certifi>=2022.5            # CA bundle used for the TLS MongoDB connection

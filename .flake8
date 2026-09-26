@@ -1,0 +1,18 @@
+[flake8]
+max-line-length = 100
+extend-ignore =
+    # Black compatible slicing and line breaks
+    E203,
+    # `l`/`I`/`O` as ambiguous identifiers
+    E741
+exclude =
+    .git,
+    __pycache__,
+    artifact,
+    customer_segmentation,
+    notebooks,
+    venv,
+    .venv
+per-file-ignores =
+    # Test modules import inside functions to keep the collection order stable
+    tests/*:E402

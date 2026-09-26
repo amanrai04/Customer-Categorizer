@@ -1,0 +1,25 @@
+# The application runs on Linux in Docker and in CI, where a stray carriage
+# return breaks shebangs and `set -euo pipefail`. Normalise everything to LF so
+# the tree is identical no matter which platform it was committed from.
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.md    text eol=lf
+*.css   text eol=lf
+*.html  text eol=lf
+*.ipynb text eol=lf
+
+Dockerfile text eol=lf
+.gitignore    text eol=lf
+.dockerignore text eol=lf
+.flake8       text eol=lf
+LICENSE       text eol=lf
+
+# Notebooks embed base64 image payloads, which must survive untouched.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary

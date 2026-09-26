@@ -1,0 +1,29 @@
+# Feature contract of the trained model.
+#
+# The order of the keys below is the order the model expects its inputs in: the
+# prediction pipeline builds its input dataframe from this mapping, and the web
+# form renders one field per key. The values are the dtypes each field is cast
+# to, since HTML form values always arrive as text.
+
+columns:
+  Age: int
+  Education: int
+  Marital Status: int
+  Parental Status: int
+  Children: int
+  Income: float
+  Total_Spending: float
+  Days_as_Customer: int
+  Recency: int
+  Wines: int
+  Fruits: int
+  Meat: int
+  Fish: float
+  Sweets: int
+  Gold: float
+  Web: int
+  Catalog: int
+  Store: int
+  Discount Purchases: int
+  Total Promo: int
+  NumWebVisitsMonth: int

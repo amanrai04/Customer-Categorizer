@@ -1,0 +1,24 @@
+# Version control and CI
+.git/
+.github/
+.gitignore
+.dockerignore
+
+# Documentation and assets that the image does not need
+README.md
+LICENSE
+docs/
+notebooks/
+assignment/
+tests/
+
+# Local development artefacts
+artifact/
+customer_segmentation/
+*.log
+.venv/
+venv/
+.env
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Segmentation</title>
+    <meta name="description" content="Predict which customer segment a customer belongs to.">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Customer Segmentation</span>
+      </div>
+    </nav>
+
+    <section class="container py-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+          {% if cluster is not none %}
+            <div class="alert alert-success text-center" role="alert">
+              <h2 class="h4 mb-0">Predicted cluster: {{ cluster }}</h2>
+            </div>
+          {% endif %}
+
+          <form action="/" method="post" class="card card-body shadow-sm">
+            <p class="text-muted">
+              Enter the details of a single customer. The amounts are the totals
+              spent over the last two years.
+            </p>
+
+            {% for field in fields %}
+              <div class="mb-3">
+                <label class="form-label" for="{{ field.name }}">{{ field.label }}</label>
+
+                {% if field.is_select %}
+                  <select class="form-select" id="{{ field.name }}" name="{{ field.name }}" required>
+                    <option value="" selected disabled>Select an option</option>
+                    {% for value, text in field.options %}
+                      <option value="{{ value }}">{{ text }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="{{ field.name }}"
+                    name="{{ field.name }}"
+                    placeholder="{{ field.hint }}"
+                    required>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            <button class="btn btn-primary" type="submit">Predict cluster</button>
+          </form>
+
+          <p class="text-muted mt-3">
+            The model is trained on the marketing campaign dataset. Cluster ids are
+            arbitrary: what matters is that customers with similar behaviour are
+            grouped together.
+          </p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
